@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAZOR — ROUE Guatemala | Grupo EMOBA</title>
+<link href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{--black:#060606;--dark:#0e0e0e;--gold:#FFD400;--white:#ffffff;--muted:#888888;--line:rgba(255,255,255,0.06);}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--white);font-family:'Arimo',sans-serif;overflow-x:hidden;cursor:none;}
+.cursor{width:9px;height:9px;background:var(--gold);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;mix-blend-mode:difference;}
+.cursor-ring{width:34px;height:34px;border:1px solid rgba(255,212,0,.35);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transition:width .3s,height .3s;}
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:1.6rem 3.5rem;background:rgba(6,6,6,.98);border-bottom:1px solid rgba(255,255,255,.06);}
+.nav-brand{display:flex;align-items:center;gap:1.1rem;text-decoration:none;}
+.nav-logo{height:28px;width:auto;display:block;}
+.emoba-logo{height:20px;width:auto;display:block;opacity:.9;}
+.brand-sep{width:1px;height:18px;background:rgba(255,255,255,.1);}
+.brand-emoba{font-family:'PF Baseline Pro',sans-serif;font-size:.66rem;letter-spacing:.22em;color:var(--muted);text-transform:uppercase;line-height:1.5;}
+.nav-links{display:flex;gap:2.8rem;list-style:none;}
+.nav-links a{font-family:'PF Baseline Pro',sans-serif;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .25s;}
+.nav-links a:hover{color:var(--white);}
+.nav-btn{font-family:'PF Baseline Pro',sans-serif;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;background:var(--gold);color:var(--black);padding:.65rem 1.6rem;text-decoration:none;font-weight:700;transition:opacity .2s;}
+.nav-btn:hover{opacity:.85;}
+/* HERO */
+.hero{min-height:100vh;padding-top:70px;background:#e5e2db;display:flex;flex-direction:column;overflow:hidden;}
+.hero-top{display:flex;flex-direction:column;align-items:center;padding:2.5rem 3.5rem 0;text-align:center;}
+.hero-roue-title{font-family:'PF Baseline Pro',sans-serif;font-size:clamp(1.6rem,3vw,2.4rem);letter-spacing:.18em;color:#1a1a1a;opacity:0;animation:up .5s .1s forwards;}
+.hero-roue-sub{font-family:'PF Baseline Pro',sans-serif;font-size:.68rem;letter-spacing:.32em;text-transform:uppercase;color:#777;margin-top:.3rem;opacity:0;animation:up .5s .2s forwards;}
+.hero-img-area{flex:1;display:flex;align-items:center;justify-content:center;padding:.5rem 4rem;opacity:0;animation:fadeIn .9s .3s forwards;}
+.hero-img-area img{max-width:78%;max-height:62vh;object-fit:contain;filter:drop-shadow(0 24px 48px rgba(0,0,0,.2));transition:transform .5s ease;}
+.hero-img-area:hover img{transform:translateY(-10px);}
+.hero-foot{display:flex;align-items:flex-end;justify-content:space-between;padding:1rem 3.5rem 2.5rem;opacity:0;animation:up .5s .6s forwards;}
+.hero-foot-left{display:flex;flex-direction:column;gap:.25rem;}
+.hfl-tag{font-family:'PF Baseline Pro',sans-serif;font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:#777;display:flex;align-items:center;gap:.5rem;}
+.hfl-tag::before{content:'—';}
+.hfl-name{font-family:'PF Baseline Pro',sans-serif;font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;color:#2a2a2a;font-weight:700;}
+.color-picker{display:flex;flex-direction:column;align-items:center;gap:.5rem;}
+.cp-label{font-family:'PF Baseline Pro',sans-serif;font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:#777;}
+.cp-dots{display:flex;gap:.8rem;}
+.cp-dot{width:22px;height:22px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all .25s;position:relative;}
+.cp-dot.active{border-color:#1a1a1a;transform:scale(1.15);}
+.cp-dot[data-c="arena"]{background:#c8b882;}
+.cp-dot[data-c="gris"]{background:#6b6b6b;}
+.cp-dot::after{content:attr(data-n);position:absolute;bottom:-1.5rem;left:50%;transform:translateX(-50%);font-family:'PF Baseline Pro',sans-serif;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:#777;white-space:nowrap;}
+.hero-discover{font-family:'PF Baseline Pro',sans-serif;font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:#666;}
+/* INTRO */
+.intro{background:var(--black);display:grid;grid-template-columns:1fr 1fr;}
+.intro-l{padding:7rem 4rem 7rem 3.5rem;border-right:1px solid var(--line);display:flex;flex-direction:column;justify-content:center;}
+.eyebrow{display:flex;align-items:center;gap:.6rem;font-family:'PF Baseline Pro',sans-serif;font-size:.65rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:1.8rem;}
+.eyebrow::before{content:'—';}
+.big-title{font-family:'PF Baseline Pro',sans-serif;font-size:clamp(3rem,6vw,5.5rem);line-height:.88;letter-spacing:.02em;}
+.big-title .g{color:var(--gold);}
+.intro-r{padding:7rem 3.5rem 7rem 4rem;display:flex;flex-direction:column;justify-content:center;gap:1.5rem;}
+.intro-p{font-size:1rem;line-height:1.9;color:rgba(255,255,255,.65);font-weight:300;}
+.intro-p strong{color:var(--white);font-weight:500;}
+.intro-p em{color:var(--gold);font-style:normal;font-weight:500;}
+/* STATS */
+.stats{background:#0e0e0e;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);}
+.stat{padding:3.5rem 2rem;text-align:center;border-right:1px solid var(--line);}
+.stat:last-child{border-right:none;}
+.stat-n{font-family:'PF Baseline Pro',sans-serif;font-size:clamp(2.5rem,4.5vw,4.5rem);color:var(--gold);line-height:1;letter-spacing:.04em;}
+.stat-l{font-family:'PF Baseline Pro',sans-serif;font-size:.65rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-top:.5rem;}
+/* COLORES */
+.colores{background:var(--black);padding:6rem 3.5rem;}
+.s-tag{font-family:'PF Baseline Pro',sans-serif;font-size:.65rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:.6rem;margin-bottom:1rem;}
+.s-tag::before{content:'—';}
+.s-h{font-family:'PF Baseline Pro',sans-serif;font-size:clamp(2.5rem,5vw,5rem);line-height:.9;letter-spacing:.02em;margin-bottom:3rem;}
+.s-h .g{color:var(--gold);}
+.s-h .stroke{color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.2);}
+.col-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;}
+.col-card{background:#0d0d0d;overflow:hidden;cursor:pointer;}
+.col-card-img{aspect-ratio:16/11;display:flex;align-items:center;justify-content:center;padding:2.5rem;}
+.col-card-img img{max-width:82%;max-height:100%;object-fit:contain;filter:drop-shadow(0 10px 30px rgba(0,0,0,.4));transition:transform .5s;}
+.col-card:hover .col-card-img img{transform:scale(1.05) translateY(-8px);}
+.col-card-ft{padding:1.4rem 2rem 1.8rem;border-top:1px solid var(--line);}
+.col-card-nm{font-family:'PF Baseline Pro',sans-serif;font-size:1.6rem;letter-spacing:.1em;margin-bottom:.6rem;}
+.col-swatch{width:44px;height:4px;border-radius:2px;}
+/* GALERIA */
+.gal{background:var(--black);padding:6rem 3.5rem;}
+.gal-grid{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:190px;gap:2px;margin-top:3rem;}
+.gal-cell{overflow:hidden;background:#111;cursor:pointer;position:relative;}
+.gal-cell img{width:100%;height:100%;object-fit:cover;transition:transform .5s;}
+.gal-cell:hover img{transform:scale(1.09);}
+.gal-lbl{position:absolute;bottom:0;left:0;right:0;padding:.5rem .7rem;font-family:'PF Baseline Pro',sans-serif;font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.6);background:linear-gradient(to top,rgba(0,0,0,.8),transparent);opacity:0;transition:opacity .3s;}
+.gal-cell:hover .gal-lbl{opacity:1;}
+/* FICHA */
+.ficha{background:#080808;padding:6rem 3.5rem;}
+.ficha-badge{display:inline-block;background:var(--gold);color:var(--black);font-family:'PF Baseline Pro',sans-serif;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;font-weight:700;padding:.6rem 1.4rem;margin-bottom:4rem;}
+.ficha-grid{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid rgba(255,255,255,.06);}
+.fc{padding:2.8rem 2.2rem;border-right:1px solid rgba(255,255,255,.06);transition:background .25s;}
+.fc:nth-child(3n){border-right:none;}
+.fc:nth-child(n+4){border-top:1px solid rgba(255,255,255,.06);}
+.fc:hover{background:rgba(255,255,255,.02);}
+.fc-icon{width:64px;height:auto;display:block;margin-bottom:.9rem;}
+.fc-cat{font-family:'PF Baseline Pro',sans-serif;font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:1.3rem;}
+.fc-list{list-style:none;display:flex;flex-direction:column;gap:.55rem;}
+.fc-list li{font-size:.9rem;color:rgba(255,255,255,.65);display:flex;align-items:baseline;gap:.65rem;font-weight:300;line-height:1.5;}
+.fc-list li::before{content:'—';color:var(--gold);flex-shrink:0;font-family:'PF Baseline Pro',sans-serif;}
+/* CTA */
+.cta-end{background:var(--black);min-height:80vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6rem 3.5rem;position:relative;overflow:hidden;}
+.cta-end::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 65% 55% at 50% 50%,rgba(255,212,0,.07),transparent 65%);}
+.cta-h{font-family:'PF Baseline Pro',sans-serif;font-size:clamp(4rem,9vw,9rem);line-height:.88;letter-spacing:.02em;margin-bottom:1.5rem;position:relative;}
+.cta-h .outline{color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.2);}
+.cta-p{font-size:1rem;color:rgba(255,255,255,.55);font-weight:300;max-width:440px;line-height:1.85;margin-bottom:3rem;position:relative;}
+.cta-btns{display:flex;gap:1.2rem;justify-content:center;position:relative;}
+.btn-solid{font-family:'PF Baseline Pro',sans-serif;font-size:.75rem;letter-spacing:.22em;text-transform:uppercase;background:var(--gold);color:var(--black);padding:.75rem 2rem;font-weight:700;text-decoration:none;transition:opacity .2s;}
+.btn-solid:hover{opacity:.85;}
+.btn-ghost{font-family:'PF Baseline Pro',sans-serif;font-size:.75rem;letter-spacing:.22em;text-transform:uppercase;border:1px solid rgba(255,255,255,.2);color:var(--white);padding:.75rem 2rem;text-decoration:none;transition:border-color .25s,color .25s;}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
+footer{background:var(--black);border-top:1px solid var(--line);padding:2.5rem 3.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+.foot-brand{font-family:'PF Baseline Pro',sans-serif;font-size:1.1rem;letter-spacing:.1em;}
+.foot-brand span{color:var(--gold);margin:0 .4rem;}
+.foot-sub{font-family:'PF Baseline Pro',sans-serif;font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:.2rem;}
+.foot-copy{font-family:'PF Baseline Pro',sans-serif;font-size:.62rem;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;}
+.flinks{display:flex;gap:2rem;list-style:none;}
+.flinks a{font-family:'PF Baseline Pro',sans-serif;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s;}
+.flinks a:hover{color:var(--white);}
+/* LIGHTBOX */
+#lb{display:none;position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:1000;align-items:center;justify-content:center;}
+#lb.open{display:flex;}
+#lb img{max-width:82vw;max-height:82vh;object-fit:contain;}
+.lb-close{position:absolute;top:1.5rem;right:2rem;background:none;border:none;color:#fff;cursor:pointer;font-family:'PF Baseline Pro',sans-serif;font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;}
+.lb-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#fff;width:54px;height:54px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:2rem;line-height:1;transition:all .2s;}
+.lb-btn:hover{background:rgba(255,212,0,.18);border-color:#FFD400;color:#FFD400;}
+.lb-prev{left:1.5rem;}
+.lb-next{right:1.5rem;}
+.lb-count{position:absolute;bottom:1.5rem;left:50%;transform:translateX(-50%);font-family:'PF Baseline Pro',sans-serif;font-size:.65rem;letter-spacing:.22em;text-transform:uppercase;color:#888;}
+@keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.rev{opacity:0;transform:translateY(26px);transition:opacity .7s,transform .7s;}
+.rev.on{opacity:1;transform:none;}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+/* ── RESPONSIVE ─────────────────────────── */
+@media(max-width:768px){
+  .cursor,.cursor-ring{display:none;}body{cursor:auto;}
+  nav{padding:1rem 1.2rem;}
+  .nav-links{display:none;}
+  .brand-emoba{display:none;}
+  .emoba-logo{display:none;}
+  .nav-btn{padding:.5rem .9rem;font-size:.65rem;letter-spacing:.14em;}
+  .hero-top{padding:1.5rem 1.2rem 0;}
+  .hero-img-area{padding:.5rem 1.5rem;}
+  .hero-img-area img{max-width:90%;max-height:52vh;}
+  .hero-foot{flex-direction:column;align-items:flex-start;gap:1.2rem;padding:.8rem 1.2rem 2rem;}
+  .intro{grid-template-columns:1fr;}
+  .intro-l{padding:3.5rem 1.5rem;border-right:none;border-bottom:1px solid var(--line);}
+  .intro-r{padding:2.5rem 1.5rem 3.5rem;}
+  .stats{grid-template-columns:1fr 1fr;}
+  .stat{padding:2rem 1rem;}
+  .colores{padding:4rem 1.2rem;}
+  .col-grid{grid-template-columns:1fr;}
+  .gal{padding:4rem 1.2rem;}
+  .gal-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:140px;}
+  .ficha{padding:4rem 1.2rem;}
+  .ficha-grid{grid-template-columns:1fr;}
+  .fc{border-right:none;}
+  .fc:nth-child(n+2){border-top:1px solid rgba(255,255,255,.06);}
+  .cta-end{padding:4rem 1.5rem;min-height:60vh;}
+  .cta-h{font-size:clamp(2.8rem,10vw,6rem);}
+  .cta-btns{flex-direction:column;align-items:stretch;}
+  .btn-solid,.btn-ghost{text-align:center;justify-content:center;}
+  footer{padding:2rem 1.2rem;flex-direction:column;align-items:flex-start;gap:.8rem;}
+  .flinks{flex-wrap:wrap;gap:1rem;}
+  #lb img{max-width:95vw;max-height:75vh;}
+  .lb-btn{width:40px;height:40px;font-size:1.4rem;}
+}
+@media(max-width:480px){
+  .stats{grid-template-columns:1fr;}
+  .stat{border-right:none;border-bottom:1px solid var(--line);}
+  .stat:last-child{border-bottom:none;}
+  .gal-grid{grid-template-columns:1fr 1fr;grid-auto-rows:120px;}
+}
+
+/* ROUE Brand Fonts */
+@font-face { font-family:'PF Baseline Pro'; src:url('fonts/PFBaselinePro-Regular.ttf') format('truetype'); font-weight:400; font-style:normal; }
+@font-face { font-family:'PF Baseline Pro'; src:url('fonts/PFBaselinePro-Medium.ttf') format('truetype'); font-weight:500; font-style:normal; }
+@font-face { font-family:'PF Baseline Pro'; src:url('fonts/PFBaselinePro-Bold.ttf') format('truetype'); font-weight:700; font-style:normal; }
+@font-face { font-family:'PF Baseline Pro'; src:url('fonts/PFBaselinePro-Light.ttf') format('truetype'); font-weight:300; font-style:normal; }
+</style>
+</head>
+<body>
+<div class="cursor" id="cur"></div>
+<div class="cursor-ring" id="ring"></div>
+
+<!-- LIGHTBOX -->
+<div id="lb">
+  <button class="lb-close" onclick="lbClose()">✕ Cerrar</button>
+  <button class="lb-btn lb-prev" onclick="lbNav(-1)">&#8249;</button>
+  <img id="lbImg" src="" alt="">
+  <button class="lb-btn lb-next" onclick="lbNav(1)">&#8250;</button>
+  <div class="lb-count" id="lbCount"></div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-brand">
+    <img src="imgs/roue-logo-white.png" alt="ROUE Powerful Riding" class="nav-logo">
+    <span class="brand-sep"></span>
+    <img src="imgs/emoba-logo-white.png" alt="Grupo EMOBA" class="emoba-logo">
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="index.html#modelos">Modelos</a></li>
+    <li><a href="garantia.html">Garantía</a></li>
+    <li><a href="#">Nosotros</a></li>
+  </ul>
+  <a href="https://wa.me/50259661052" target="_blank" class="nav-btn">» Contáctanos</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-top">
+    <div class="hero-roue-title">RAZOR</div>
+    <div class="hero-roue-sub">Motos — Guatemala</div>
+  </div>
+  <div class="hero-img-area">
+    <img id="heroImg" src="imgs/RAZOR_ARENA_-_03.png" alt="ROUE Razor">
+  </div>
+  <div class="hero-foot">
+    <div class="hero-foot-left">
+      <div class="hfl-tag">Bicimoto Eléctrica</div>
+      <div class="hfl-name">ROUE RAZOR — Nueva Línea Ácido Plomo</div>
+    </div>
+    <div class="color-picker">
+      <div class="cp-label">Colores disponibles</div>
+      <div class="cp-dots">
+        <div class="cp-dot active" data-c="arena" data-n="Arena" data-img="imgs/RAZOR_ARENA_-_03.png"></div>
+        <div class="cp-dot" data-c="gris" data-n="Gris" data-img="imgs/RAZOR_GRIS_-_03.png"></div>
+      </div>
+    </div>
+    <div class="hero-discover">Descubre más ↓</div>
+  </div>
+</section>
+
+<!-- INTRO -->
+<section class="intro" id="intro">
+  <div class="intro-l rev">
+    <div class="eyebrow">ROUE Razor</div>
+    <h2 class="big-title">POTENCIA<br>SIN<br><span class="g">LÍMITES.</span></h2>
+  </div>
+  <div class="intro-r rev d2">
+    <p class="intro-p">La <strong>RAZOR</strong> no es una moto más — es una declaración. Motor sin escobillas de <strong>800 watts</strong>, torque instantáneo de 75 Nm y protección IP65 que la hace imparable en cualquier condición. Diseño afilado que corta el viento antes de que arranques.</p>
+    <p class="intro-p">Pantalla a color, iluminación LED full, transmisión automática y asiento acolchado con costuras premium. Todo lo que esperas de una moto de alto nivel, con cero emisiones. Disponible en <em>Gris</em> y <em>Arena</em>.</p>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat rev"><div class="stat-n">50</div><div class="stat-l">km/h velocidad máx.</div></div>
+  <div class="stat rev d1"><div class="stat-n">50</div><div class="stat-l">km de autonomía</div></div>
+  <div class="stat rev d2"><div class="stat-n">800</div><div class="stat-l">watts de potencia</div></div>
+  <div class="stat rev d3"><div class="stat-n">6-8</div><div class="stat-l">hrs tiempo de carga</div></div>
+</div>
+
+<!-- COLORES -->
+<section class="colores" id="colores">
+  <div class="s-tag rev">Colores disponibles</div>
+  <h2 class="s-h rev d1">ELIGE TU COLOR</h2>
+  <div class="col-grid rev d2">
+    <div class="col-card">
+      <div class="col-card-img"><img src="imgs/RAZOR_ARENA_-_03.png" alt="Arena"></div>
+      <div class="col-card-ft"><div class="col-card-nm">Arena</div><div class="col-swatch" style="background:#c8b882;"></div></div>
+    </div>
+    <div class="col-card" style="background:#0a0a0a;">
+      <div class="col-card-img" style="background:#0a0a0a;"><img src="imgs/RAZOR_GRIS_-_03.png" alt="Gris"></div>
+      <div class="col-card-ft"><div class="col-card-nm">Gris</div><div class="col-swatch" style="background:#6b6b6b;"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- GALERÍA GRIS -->
+<section class="gal" id="gal-gris" style="padding-top:2rem;">
+  <div class="s-tag rev">Galería — Razor Gris</div>
+  <h2 class="s-h rev d1">CADA DETALLE,<br><span class="g">PERFECTO.</span></h2>
+  <div class="gal-grid rev d2">
+    <div class="gal-cell"><img src="imgs/RAZOR_GRIS_-_02.png" alt="Frontal"><div class="gal-lbl">Vista frontal</div></div>
+    <div class="gal-cell"><img src="imgs/RAZOR_GRIS_-_04.png" alt="Trasera"><div class="gal-lbl">Vista trasera</div></div>
+    <div class="gal-cell"><img src="imgs/RAZOR_GRIS_-_05.png" alt="Amortiguador"><div class="gal-lbl">Amortiguador</div></div>
+    <div class="gal-cell"><img src="imgs/RAZOR_GRIS_-_06.png" alt="Controles izq"><div class="gal-lbl">Controles izquierdos</div></div>
+    <div class="gal-cell"><img src="imgs/RAZOR_GRIS_-_07.png" alt="Controles der"><div class="gal-lbl">Controles derechos</div></div>
+    <div class="gal-cell"><img src="imgs/RAZOR_GRIS_-_08.png" alt="Tablero"><div class="gal-lbl">Pantalla digital</div></div>
+    <div class="gal-cell"><img src="imgs/RAZOR_GRIS_-_09.png" alt="Emblema"><div class="gal-lbl">Emblema Razor</div></div>
+    <div class="gal-cell"><img src="imgs/RAZOR_GRIS_-_10.png" alt="Asiento"><div class="gal-lbl">Asiento premium</div></div>
+    <div class="gal-cell"><img src="imgs/RAZOR_GRIS_-_11.png" alt="Parabrisas"><div class="gal-lbl">Parabrisas ahumado</div></div>
+    <div class="gal-cell"><img src="imgs/RAZOR_GRIS_-_12.png" alt="Llanta"><div class="gal-lbl">Freno de disco</div></div>
+    <div class="gal-cell"><img src="imgs/RAZOR_GRIS_-_13.png" alt="Manubrio"><div class="gal-lbl">Manubrio</div></div>
+    <div class="gal-cell"><img src="imgs/RAZOR_GRIS_-_14.png" alt="Motor"><div class="gal-lbl">Motor trasero</div></div>
+  </div>
+</section>
+
+<!-- GALERÍA ARENA -->
+<section class="gal" id="gal-arena" style="padding-top:2rem;">
+  <div class="s-tag rev">Galería — Razor Arena</div>
+  <h2 class="s-h rev d1">COLOR ARENA,<br><span class="g">PURO ESTILO.</span></h2>
+  <div class="gal-grid rev d2">
+    <div class="gal-cell"><img src="imgs/RAZOR_ARENA_-_02.png" alt="Frontal"><div class="gal-lbl">Vista frontal</div></div>
+    <div class="gal-cell"><img src="imgs/RAZOR_ARENA_-_04.png" alt="Trasera"><div class="gal-lbl">Vista trasera</div></div>
+    <div class="gal-cell"><img src="imgs/RAZOR_ARENA_-_05.png" alt="Amortiguador"><div class="gal-lbl">Amortiguador</div></div>
+    <div class="gal-cell"><img src="imgs/RAZOR_ARENA_-_06.png" alt="Controles izq"><div class="gal-lbl">Controles izquierdos</div></div>
+    <div class="gal-cell"><img src="imgs/RAZOR_ARENA_-_07.png" alt="Controles der"><div class="gal-lbl">Controles derechos</div></div>
+    <div class="gal-cell"><img src="imgs/RAZOR_ARENA_-_08.png" alt="Tablero"><div class="gal-lbl">Pantalla digital</div></div>
+    <div class="gal-cell"><img src="imgs/RAZOR_ARENA_-_09.png" alt="Emblema"><div class="gal-lbl">Emblema Razor</div></div>
+    <div class="gal-cell"><img src="imgs/RAZOR_ARENA_-_10.png" alt="Asiento"><div class="gal-lbl">Asiento premium</div></div>
+    <div class="gal-cell"><img src="imgs/RAZOR_ARENA_-_11.png" alt="Parabrisas"><div class="gal-lbl">Parabrisas ahumado</div></div>
+    <div class="gal-cell"><img src="imgs/RAZOR_ARENA_-_12.png" alt="Llanta"><div class="gal-lbl">Freno de disco</div></div>
+    <div class="gal-cell"><img src="imgs/RAZOR_ARENA_-_13.png" alt="Motor"><div class="gal-lbl">Motor trasero</div></div>
+    <div class="gal-cell"><img src="imgs/RAZOR_ARENA_-_14.png" alt="Manubrio"><div class="gal-lbl">Manubrio</div></div>
+  </div>
+</section>
+
+<!-- FICHA -->
+<section class="ficha" id="specs">
+  <div class="s-tag rev">Especificaciones completas</div>
+  <h2 class="s-h rev d1">FICHA TÉCNICA</h2>
+  <div class="ficha-badge rev d2">1 Batería Ácido Plomo 48V 25Ah y Cargador</div>
+  <div class="ficha-grid rev d3">
+    <div class="fc"><img class="fc-icon" src="imgs/roue-icon-tecnologia-symbol.png" alt=""><div class="fc-cat">Sistema Eléctrico</div><ul class="fc-list"><li>Batería ácido plomo 48V 25Ah</li><li>Cargador inteligente incluido</li></ul></div>
+    <div class="fc"><img class="fc-icon" src="imgs/roue-icon-rendimiento-symbol.png" alt=""><div class="fc-cat">Motor</div><ul class="fc-list"><li>Motor sin escobillas</li><li>Potencia 800 watts</li><li>Torque 75 Nm</li><li>Impermeabilidad IP65</li></ul></div>
+    <div class="fc"><img class="fc-icon" src="imgs/roue-icon-emisiones-symbol.png" alt=""><div class="fc-cat">Transmisión</div><ul class="fc-list"><li>Transmisión automática</li></ul></div>
+    <div class="fc"><img class="fc-icon" src="imgs/roue-icon-diversion-symbol.png" alt=""><div class="fc-cat">Equipamiento</div><ul class="fc-list"><li>Iluminación LED</li><li>Pantalla a color</li><li>Compartimento bajo asiento</li><li>Clave VIN verificado ante REPUVE</li></ul></div>
+    <div class="fc"><img class="fc-icon" src="imgs/roue-icon-garantia-symbol.png" alt=""><div class="fc-cat">Dimensiones</div><ul class="fc-list"><li>Largo 155 cm</li><li>Ancho 72 cm</li><li>Alto 133 cm</li><li>Cap. de carga 330 lbs</li><li>Peso neto 170 lbs</li></ul></div>
+    <div class="fc"><img class="fc-icon" src="imgs/roue-icon-mantenimiento-symbol.png" alt=""><div class="fc-cat">Suspensión</div><ul class="fc-list"><li>Suspensión hidráulica</li><li>Freno delantero hidráulico de disco</li><li>Freno trasero de tambor</li><li>Neumático delantero 3.0-10"</li><li>Neumático trasero 3.0-10"</li></ul></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-end">
+  <h2 class="cta-h rev">SIENTE LA<br><span class="outline">DIFERENCIA.</span></h2>
+  <p class="cta-p rev d1">Un asesor de Grupo EMOBA Guatemala te guía para llevar tu RAZOR a casa.</p>
+  <div class="cta-btns rev d2">
+    <a href="https://wa.me/50259661052" target="_blank" class="btn-solid">» ROUE te guía para adquirirla</a>
+    <a href="index.html#modelos" class="btn-ghost">Ver otros modelos</a>
+  </div>
+</section>
+
+<footer>
+  <div>
+    <div class="foot-brand">ROUE <span>×</span> GRUPO EMOBA</div>
+    <div class="foot-sub">Distribuidores Oficiales en Guatemala — Marca Mexicana ROUE</div>
+  </div>
+  <ul class="flinks">
+    <li><a href="index.html#modelos">Modelos</a></li>
+    <li><a href="garantia.html">Garantía</a></li>
+    <li><a href="index.html#contacto">Contacto</a></li>
+  </ul>
+  <div class="foot-copy">© 2026 Grupo EMOBA. Todos los derechos reservados.</div>
+</footer>
+
+<script>
+// CURSOR
+const cur = document.getElementById('cur');
+const ring = document.getElementById('ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cur.style.transform = 'translate(' + (mx-4) + 'px,' + (my-4) + 'px)';
+});
+(function loop() {
+  rx += (mx-rx-17)*.1; ry += (my-ry-17)*.1;
+  ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px)';
+  requestAnimationFrame(loop);
+})();
+document.querySelectorAll('a,button,.cp-dot,.gal-cell,.col-card').forEach(function(el) {
+  el.addEventListener('mouseenter', function() { ring.style.width='52px'; ring.style.height='52px'; });
+  el.addEventListener('mouseleave', function() { ring.style.width='34px'; ring.style.height='34px'; });
+});
+
+// COLOR SWITCHER
+var heroImg = document.getElementById('heroImg');
+document.querySelectorAll('.cp-dot').forEach(function(d) {
+  d.addEventListener('click', function() {
+    document.querySelectorAll('.cp-dot').forEach(function(x) { x.classList.remove('active'); });
+    d.classList.add('active');
+    heroImg.style.opacity = '0';
+    heroImg.style.transform = 'scale(.96)';
+    setTimeout(function() {
+      heroImg.src = d.dataset.img;
+      heroImg.style.transition = 'opacity .4s,transform .4s';
+      heroImg.style.opacity = '1';
+      heroImg.style.transform = 'scale(1)';
+    }, 200);
+  });
+});
+
+// LIGHTBOX
+var lbEl = document.getElementById('lb');
+var lbImg = document.getElementById('lbImg');
+var lbCount = document.getElementById('lbCount');
+var lbItems = [];
+var lbIdx = 0;
+
+function lbOpen(idx) {
+  lbItems = Array.from(document.querySelectorAll('.gal-cell img')).map(function(img) { return img.src; });
+  lbIdx = idx;
+  lbImg.src = lbItems[lbIdx];
+  lbCount.textContent = (lbIdx+1) + ' / ' + lbItems.length;
+  lbEl.classList.add('open');
+}
+function lbClose() { lbEl.classList.remove('open'); }
+function lbNav(dir) {
+  lbIdx = (lbIdx + dir + lbItems.length) % lbItems.length;
+  lbImg.src = lbItems[lbIdx];
+  lbCount.textContent = (lbIdx+1) + ' / ' + lbItems.length;
+}
+
+lbEl.addEventListener('click', function(e) { if (e.target === lbEl) lbClose(); });
+document.addEventListener('keydown', function(e) {
+  if (!lbEl.classList.contains('open')) return;
+  if (e.key === 'ArrowLeft') lbNav(-1);
+  else if (e.key === 'ArrowRight') lbNav(1);
+  else if (e.key === 'Escape') lbClose();
+});
+document.querySelectorAll('.gal-cell').forEach(function(c, i) {
+  c.addEventListener('click', function() { lbOpen(i); });
+});
+
+// SCROLL REVEAL
+var obs = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('on'); });
+}, {threshold: .1});
+document.querySelectorAll('.rev').forEach(function(el) { obs.observe(el); });
+</script>
+</body>
+</html>

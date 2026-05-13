@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Garantía — ROUE Guatemala | Grupo EMOBA</title>
+<link href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{--black:#060606;--dark:#0e0e0e;--gold:#FFD400;--white:#ffffff;--muted:#888888;--line:rgba(255,255,255,0.06);}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--white);font-family:'Arimo',sans-serif;overflow-x:hidden;cursor:none;}
+.cursor{width:9px;height:9px;background:var(--gold);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;mix-blend-mode:difference;}
+.cursor-ring{width:34px;height:34px;border:1px solid rgba(255,212,0,.35);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transition:width .3s,height .3s;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:1.6rem 3.5rem;background:rgba(6,6,6,.98);border-bottom:1px solid rgba(255,255,255,.06);}
+.nav-brand{display:flex;align-items:center;gap:1.1rem;text-decoration:none;}
+.nav-logo{height:28px;width:auto;display:block;}
+.emoba-logo{height:20px;width:auto;display:block;opacity:.9;}
+.brand-sep{width:1px;height:18px;background:rgba(255,255,255,.1);}
+.brand-emoba{font-family:'PF Baseline Pro',sans-serif;font-size:.66rem;letter-spacing:.22em;color:var(--muted);text-transform:uppercase;line-height:1.5;}
+.nav-links{display:flex;gap:2.8rem;list-style:none;}
+.nav-links a{font-family:'PF Baseline Pro',sans-serif;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .25s;}
+.nav-links a:hover,.nav-links a.active{color:var(--white);}
+.nav-btn{font-family:'PF Baseline Pro',sans-serif;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;background:var(--gold);color:var(--black);padding:.65rem 1.6rem;text-decoration:none;font-weight:700;transition:opacity .2s;}
+.nav-btn:hover{opacity:.85;}
+
+/* HERO */
+.hero{min-height:55vh;padding-top:70px;background:var(--black);display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding-left:3.5rem;padding-right:3.5rem;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 0% 50%,rgba(255,212,0,.06),transparent 60%);}
+.hero-eyebrow{font-family:'PF Baseline Pro',sans-serif;font-size:.65rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:.6rem;margin-bottom:1.5rem;position:relative;opacity:0;animation:up .6s .1s forwards;}
+.hero-eyebrow::before{content:'—';}
+.hero-title{font-family:'PF Baseline Pro',sans-serif;font-size:clamp(4rem,10vw,10rem);line-height:.85;letter-spacing:.02em;position:relative;opacity:0;animation:up .8s .25s forwards;}
+.hero-title .outline{color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.2);}
+.hero-title .gold{color:var(--gold);}
+.hero-sub{font-size:1rem;line-height:1.9;color:rgba(255,255,255,.55);font-weight:300;max-width:520px;margin-top:2rem;position:relative;opacity:0;animation:up .7s .45s forwards;}
+.hero-sub strong{color:var(--white);font-weight:500;}
+
+/* MAIN CONTENT */
+.garantia-main{padding:6rem 3.5rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;}
+
+/* COBERTURA */
+.g-card{background:var(--dark);padding:3rem;border:1px solid var(--line);position:relative;overflow:hidden;}
+.g-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),transparent);}
+.g-card-icon{font-size:2rem;margin-bottom:1.2rem;}
+.g-card-title{font-family:'PF Baseline Pro',sans-serif;font-size:2rem;letter-spacing:.06em;margin-bottom:.6rem;}
+.g-card-sub{font-family:'PF Baseline Pro',sans-serif;font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:2rem;}
+.g-card-text{font-size:.95rem;line-height:1.9;color:rgba(255,255,255,.65);font-weight:300;}
+.g-card-text strong{color:var(--white);font-weight:500;}
+
+/* VIGENCIA BADGE */
+.vigencia-badge{display:inline-flex;align-items:center;gap:1rem;background:rgba(255,212,0,.08);border:1px solid rgba(255,212,0,.25);padding:1.2rem 2rem;margin-top:2rem;}
+.vigencia-num{font-family:'PF Baseline Pro',sans-serif;font-size:3.5rem;color:var(--gold);line-height:1;}
+.vigencia-info{display:flex;flex-direction:column;}
+.vigencia-label{font-family:'PF Baseline Pro',sans-serif;font-size:.65rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);}
+.vigencia-desc{font-family:'PF Baseline Pro',sans-serif;font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;color:var(--white);margin-top:.2rem;}
+
+/* NO APLICA */
+.no-aplica-section{background:#080808;padding:6rem 3.5rem;}
+.section-eyebrow{font-family:'PF Baseline Pro',sans-serif;font-size:.65rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:.6rem;margin-bottom:1rem;}
+.section-eyebrow::before{content:'—';}
+.section-title{font-family:'PF Baseline Pro',sans-serif;font-size:clamp(2.5rem,5vw,5rem);line-height:.9;letter-spacing:.02em;margin-bottom:3.5rem;}
+.section-title .g{color:var(--gold);}
+.section-title .stroke{color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.2);}
+
+.no-aplica-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.06);}
+.na-item{background:#080808;padding:2.2rem 2rem;transition:background .25s;position:relative;}
+.na-item:hover{background:#0e0e0e;}
+.na-item::before{content:'';position:absolute;top:0;left:0;bottom:0;width:2px;background:rgba(255,212,0,0);transition:background .3s;}
+.na-item:hover::before{background:var(--gold);}
+.na-num{font-family:'PF Baseline Pro',sans-serif;font-size:2.5rem;color:rgba(255,212,0,.15);line-height:1;margin-bottom:.8rem;}
+.na-title{font-family:'PF Baseline Pro',sans-serif;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:.7rem;font-weight:700;}
+.na-text{font-size:.88rem;line-height:1.75;color:rgba(255,255,255,.6);font-weight:300;}
+
+/* PROCESO */
+.proceso-section{background:var(--black);padding:6rem 3.5rem;}
+.proceso-steps{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;background:var(--line);margin-top:3.5rem;}
+.step{background:var(--black);padding:3rem 2.5rem;position:relative;display:flex;gap:2rem;align-items:flex-start;transition:background .25s;}
+.step:hover{background:#0a0a0a;}
+.step-num{font-family:'PF Baseline Pro',sans-serif;font-size:4rem;color:rgba(255,212,0,.12);line-height:1;flex-shrink:0;margin-top:-.5rem;}
+.step-content{}
+.step-title{font-family:'PF Baseline Pro',sans-serif;font-size:1.5rem;letter-spacing:.06em;margin-bottom:.6rem;}
+.step-text{font-size:.9rem;line-height:1.8;color:rgba(255,255,255,.6);font-weight:300;}
+.step-text strong{color:var(--white);font-weight:500;}
+
+/* CTA */
+.cta-section{background:var(--dark);padding:7rem 3.5rem;text-align:center;position:relative;overflow:hidden;}
+.cta-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 55% at 50% 50%,rgba(255,212,0,.07),transparent 65%);}
+.cta-title{font-family:'PF Baseline Pro',sans-serif;font-size:clamp(3rem,7vw,7rem);line-height:.88;letter-spacing:.02em;margin-bottom:1.5rem;position:relative;}
+.cta-title .outline{color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.2);}
+.cta-p{font-size:1rem;color:rgba(255,255,255,.55);font-weight:300;max-width:440px;margin:0 auto 3rem;line-height:1.85;position:relative;}
+.cta-btns{display:flex;gap:1.2rem;justify-content:center;position:relative;}
+.btn-solid{font-family:'PF Baseline Pro',sans-serif;font-size:.75rem;letter-spacing:.22em;text-transform:uppercase;background:var(--gold);color:var(--black);padding:.75rem 2rem;font-weight:700;text-decoration:none;transition:opacity .2s;}
+.btn-solid:hover{opacity:.85;}
+.btn-ghost{font-family:'PF Baseline Pro',sans-serif;font-size:.75rem;letter-spacing:.22em;text-transform:uppercase;border:1px solid rgba(255,255,255,.2);color:var(--white);padding:.75rem 2rem;text-decoration:none;transition:border-color .25s,color .25s;}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
+
+/* FOOTER */
+footer{background:var(--black);border-top:1px solid var(--line);padding:2.5rem 3.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+.foot-brand{font-family:'PF Baseline Pro',sans-serif;font-size:1.1rem;letter-spacing:.1em;}
+.foot-brand span{color:var(--gold);margin:0 .4rem;}
+.foot-sub{font-family:'PF Baseline Pro',sans-serif;font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:.2rem;}
+.foot-copy{font-family:'PF Baseline Pro',sans-serif;font-size:.62rem;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;}
+.flinks{display:flex;gap:2rem;list-style:none;}
+.flinks a{font-family:'PF Baseline Pro',sans-serif;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s;}
+.flinks a:hover{color:var(--white);}
+
+/* ANIMATIONS */
+@keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.rev{opacity:0;transform:translateY(26px);transition:opacity .7s,transform .7s;}
+.rev.on{opacity:1;transform:none;}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}.d5{transition-delay:.5s}
+/* ── RESPONSIVE ─────────────────────────── */
+@media(max-width:768px){
+  .cursor,.cursor-ring{display:none;}body{cursor:auto;}
+  nav{padding:1rem 1.2rem;}
+  .nav-links{display:none;}
+  .brand-emoba{display:none;}
+  .emoba-logo{display:none;}
+  .nav-btn{padding:.5rem .9rem;font-size:.65rem;letter-spacing:.14em;}
+  .hero{padding-left:1.2rem;padding-right:1.2rem;padding-top:90px;padding-bottom:3rem;min-height:auto;}
+  .garantia-main{grid-template-columns:1fr;padding:3rem 1.2rem;gap:2rem;}
+  .no-aplica-section{padding:4rem 1.2rem;}
+  .section-title{font-size:clamp(2rem,8vw,4rem);}
+  .no-aplica-grid{grid-template-columns:1fr;}
+  .proceso-section{padding:4rem 1.2rem;}
+  .proceso-steps{grid-template-columns:1fr;}
+  .cta-section{padding:5rem 1.2rem;}
+  .cta-title{font-size:clamp(2.5rem,10vw,5rem);}
+  .cta-btns{flex-direction:column;align-items:stretch;}
+  .btn-solid,.btn-ghost{text-align:center;justify-content:center;}
+  footer{padding:2rem 1.2rem;flex-direction:column;align-items:flex-start;gap:.8rem;}
+  .flinks{flex-wrap:wrap;gap:1rem;}
+}
+@media(max-width:480px){
+  .no-aplica-grid{grid-template-columns:1fr;}
+  .step{flex-direction:column;gap:1rem;}
+  .g-card{padding:2rem 1.5rem;}
+  .vigencia-badge{padding:1rem 1.2rem;}
+}
+
+/* ROUE Brand Fonts */
+@font-face { font-family:'PF Baseline Pro'; src:url('fonts/PFBaselinePro-Regular.ttf') format('truetype'); font-weight:400; font-style:normal; }
+@font-face { font-family:'PF Baseline Pro'; src:url('fonts/PFBaselinePro-Medium.ttf') format('truetype'); font-weight:500; font-style:normal; }
+@font-face { font-family:'PF Baseline Pro'; src:url('fonts/PFBaselinePro-Bold.ttf') format('truetype'); font-weight:700; font-style:normal; }
+@font-face { font-family:'PF Baseline Pro'; src:url('fonts/PFBaselinePro-Light.ttf') format('truetype'); font-weight:300; font-style:normal; }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cur"></div>
+<div class="cursor-ring" id="ring"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-brand">
+    <img src="imgs/roue-logo-white.png" alt="ROUE Powerful Riding" class="nav-logo">
+    <span class="brand-sep"></span>
+    <img src="imgs/emoba-logo-white.png" alt="Grupo EMOBA" class="emoba-logo">
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="index.html#modelos">Modelos</a></li>
+    <li><a href="#">Nosotros</a></li>
+    <li><a href="garantia.html" class="active">Garantía</a></li>
+  </ul>
+  <a href="https://wa.me/50259661052" target="_blank" class="nav-btn">» Contáctanos</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Grupo EMOBA Guatemala</div>
+  <h1 class="hero-title">
+    GARAN<span class="gold">TÍA</span><br>
+    <span class="outline">ROUE.</span>
+  </h1>
+  <p class="hero-sub">Tu tranquilidad es nuestra prioridad. Respaldamos cada moto ROUE con una garantía clara, directa y sin complicaciones. <strong>3 meses desde el día de tu compra.</strong></p>
+</section>
+
+<!-- COBERTURA + VIGENCIA -->
+<section class="garantia-main">
+  <div class="g-card rev">
+    <div class="g-card-icon">🛡</div>
+    <div class="g-card-title">Qué cubre</div>
+    <div class="g-card-sub">Cobertura por defecto de fábrica</div>
+    <p class="g-card-text">
+      Cuando tu moto presente algún <strong>defecto de fábrica</strong>, nuestra garantía cubre su reemplazo por otro artículo similar o equivalente en caso de que no haya disponibilidad en nuestro inventario dentro del mismo rango de precio.
+    </p>
+    <div class="vigencia-badge">
+      <div class="vigencia-num">3</div>
+      <div class="vigencia-info">
+        <span class="vigencia-label">Meses de vigencia</span>
+        <span class="vigencia-desc">A partir de la fecha de compra</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="g-card rev d2">
+    <div class="g-card-icon">📋</div>
+    <div class="g-card-title">Cómo aplicarla</div>
+    <div class="g-card-sub">Proceso simple en 2 pasos</div>
+    <p class="g-card-text" style="margin-bottom:2rem;">
+      Para hacer válida tu garantía el proceso es simple y directo. Solo necesitas dos cosas:
+    </p>
+    <div style="display:flex;flex-direction:column;gap:1.2rem;">
+      <div style="display:flex;align-items:flex-start;gap:1.2rem;padding:1.4rem 1.5rem;background:rgba(255,255,255,.03);border-left:2px solid var(--gold);">
+        <span style="font-family:'PF Baseline Pro',sans-serif;font-size:1.8rem;color:var(--gold);line-height:1;flex-shrink:0;">01</span>
+        <div>
+          <div style="font-family:'PF Baseline Pro',sans-serif;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.3rem;">Factura original</div>
+          <div style="font-size:.9rem;color:rgba(255,255,255,.65);font-weight:300;line-height:1.6;">Presenta tu factura original de compra como comprobante.</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:1.2rem;padding:1.4rem 1.5rem;background:rgba(255,255,255,.03);border-left:2px solid var(--gold);">
+        <span style="font-family:'PF Baseline Pro',sans-serif;font-size:1.8rem;color:var(--gold);line-height:1;flex-shrink:0;">02</span>
+        <div>
+          <div style="font-family:'PF Baseline Pro',sans-serif;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.3rem;">Canales oficiales</div>
+          <div style="font-size:.9rem;color:rgba(255,255,255,.65);font-weight:300;line-height:1.6;">Contáctanos directamente por WhatsApp o nuestras redes oficiales.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NO APLICA -->
+<section class="no-aplica-section">
+  <div class="section-eyebrow rev">Exclusiones</div>
+  <h2 class="section-title rev d1">LA GARANTÍA<br><span class="g">NO APLICA</span> <span class="stroke">CUANDO:</span></h2>
+
+  <div class="no-aplica-grid rev d2">
+    <div class="na-item">
+      <div class="na-num">01</div>
+      <div class="na-title">Producto manipulado</div>
+      <p class="na-text">El producto muestra evidentes indicios de haber sido manipulado o alterado externamente.</p>
+    </div>
+    <div class="na-item">
+      <div class="na-num">02</div>
+      <div class="na-title">Uso incorrecto</div>
+      <p class="na-text">El producto fue utilizado de manera inconsistente con las instrucciones del manual de uso.</p>
+    </div>
+    <div class="na-item">
+      <div class="na-num">03</div>
+      <div class="na-title">Maltrato o impacto</div>
+      <p class="na-text">El producto fue sometido a maltrato, impactos físicos o exposición a humedad.</p>
+    </div>
+    <div class="na-item">
+      <div class="na-num">04</div>
+      <div class="na-title">Desgaste natural</div>
+      <p class="na-text">La batería presenta desgaste natural por uso normal a lo largo del tiempo.</p>
+    </div>
+    <div class="na-item">
+      <div class="na-num">05</div>
+      <div class="na-title">Sobrecarga de batería</div>
+      <p class="na-text">La batería fue dañada por sobrecarga o por un proceso de carga incorrecto.</p>
+    </div>
+    <div class="na-item">
+      <div class="na-num">06</div>
+      <div class="na-title">Batería descargada</div>
+      <p class="na-text">La batería fue descargada completamente y mantenida sin carga por tiempo prolongado.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CUIDADO DE BATERÍA -->
+<section class="proceso-section">
+  <div class="section-eyebrow rev">Consejos ROUE</div>
+  <h2 class="section-title rev d1">CUIDA TU<br><span class="g">BATERÍA.</span></h2>
+
+  <div class="proceso-steps rev d2">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-content">
+        <div class="step-title">Carga completa regular</div>
+        <p class="step-text">Carga tu moto después de cada uso. No dejes la batería en <strong>0%</strong> por períodos prolongados.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-content">
+        <div class="step-title">Cargador original</div>
+        <p class="step-text">Usa siempre el <strong>cargador inteligente incluido</strong>. Cargadores no compatibles pueden dañar la batería.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-content">
+        <div class="step-title">Tiempo de carga</div>
+        <p class="step-text">Respeta el tiempo de carga de <strong>6 a 8 horas</strong>. No desconectes antes de completar el ciclo.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-content">
+        <div class="step-title">Uso conforme al manual</div>
+        <p class="step-text">Sigue las instrucciones del <strong>manual de usuario</strong> para garantizar la vida útil máxima de tu moto.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">05</div>
+      <div class="step-content">
+        <div class="step-title">Presión de llantas: 35 PSI</div>
+        <p class="step-text">Mantén siempre las llantas a <strong>35 PSI de presión de aire</strong>. Una presión correcta mejora el agarre, la autonomía y prolonga la vida útil de los neumáticos.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">06</div>
+      <div class="step-content">
+        <div class="step-title">Batería mínima al 30%</div>
+        <p class="step-text">Evita que la batería baje del <strong>30% de carga</strong>. Mantenerla sobre ese nivel resguarda las celdas y prolonga significativamente su vida útil.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2 class="cta-title rev">¿TIENES<br><span class="outline">PREGUNTAS?</span></h2>
+  <p class="cta-p rev d1">Nuestro equipo en Grupo EMOBA Guatemala está listo para ayudarte. Escríbenos y te respondemos de inmediato.</p>
+  <div class="cta-btns rev d2">
+    <a href="https://wa.me/50259661052" target="_blank" class="btn-solid">» Escribir por WhatsApp</a>
+    <a href="index.html#modelos" class="btn-ghost">Ver modelos</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="foot-brand">ROUE <span>×</span> GRUPO EMOBA</div>
+    <div class="foot-sub">Distribuidores Oficiales en Guatemala — Marca Mexicana ROUE</div>
+  </div>
+  <ul class="flinks">
+    <li><a href="index.html#modelos">Modelos</a></li>
+    <li><a href="garantia.html">Garantía</a></li>
+    <li><a href="index.html#contacto">Contacto</a></li>
+  </ul>
+  <div class="foot-copy">© 2026 Grupo EMOBA. Todos los derechos reservados.</div>
+</footer>
+
+<script>
+const cur = document.getElementById('cur');
+const ring = document.getElementById('ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', function(e) {
+  mx = e.clientX; my = e.clientY;
+  cur.style.transform = 'translate(' + (mx-4) + 'px,' + (my-4) + 'px)';
+});
+(function loop() {
+  rx += (mx-rx-17)*.1; ry += (my-ry-17)*.1;
+  ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px)';
+  requestAnimationFrame(loop);
+})();
+document.querySelectorAll('a,button').forEach(function(el) {
+  el.addEventListener('mouseenter', function() { ring.style.width='52px'; ring.style.height='52px'; });
+  el.addEventListener('mouseleave', function() { ring.style.width='34px'; ring.style.height='34px'; });
+});
+var obs = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('on'); });
+}, {threshold: .1});
+document.querySelectorAll('.rev').forEach(function(el) { obs.observe(el); });
+</script>
+</body>
+</html>
