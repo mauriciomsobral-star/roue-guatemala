@@ -509,14 +509,29 @@ footer { padding:2.5rem 3.5rem; display:flex; align-items:center; justify-conten
 
 @keyframes up { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
 
-/* Hide cursor on mobile */
+/* ── MOBILE NAV ──────────────────────────────────────────────── */
 @media(max-width:768px){
-  .cursor,.cursor-ring{display:none;}body{cursor:auto;}
-  nav{padding:.9rem 1.2rem .9rem .7rem;}
-  .nav-logo{height:22px;}
-  .brand-sep{display:none;}
-  .brand-emoba{display:none;}
-  .emoba-logo{display:none;}
+  .cursor,.cursor-ring{display:none;}
+  body{cursor:auto;}
+  nav {
+    padding:.75rem 1rem;
+    gap:.4rem;
+    flex-wrap:nowrap;
+    overflow:hidden;
+  }
+  .nav-brand { flex-shrink:0; }
+  .nav-logo { height:20px; }
+  .brand-sep { display:none; }
+  .brand-emoba { display:none; }
+  .emoba-logo { display:none; }
+  .nav-links { gap:.8rem; flex-shrink:1; min-width:0; }
+  .nav-links a { font-size:.58rem; letter-spacing:.1em; white-space:nowrap; }
+  .nav-links .mob-hide { display:none; }
+  .nav-btn {
+    font-size:.58rem; letter-spacing:.1em;
+    padding:.45rem .85rem;
+    white-space:nowrap; flex-shrink:0;
+  }
 }
 
 /* ROUE Brand Fonts */
@@ -790,7 +805,7 @@ footer {
 <section class="hero">
   <!-- Video background -->
   <div id="heroWrap">
-    <video autoplay muted loop playsinline preload="auto">
+    <video id="heroVideo" autoplay muted loop playsinline webkit-playsinline preload="auto">
       <source src="imgs/hero-nuevo.mp4" type="video/mp4">
       <source src="imgs/hero-loop.mp4" type="video/mp4">
     </video>
@@ -1041,6 +1056,16 @@ document.querySelectorAll('a,button').forEach(el=>{
   el.addEventListener('mouseenter',()=>{ring.style.width='52px';ring.style.height='52px';});
   el.addEventListener('mouseleave',()=>{ring.style.width='34px';ring.style.height='34px';});
 });
+
+/* ── HERO VIDEO: force autoplay on mobile ──────────────────────── */
+const heroVideo = document.getElementById('heroVideo');
+if(heroVideo){
+  heroVideo.muted = true;
+  const tryPlay = () => heroVideo.play().catch(()=>{});
+  tryPlay();
+  document.addEventListener('touchstart', tryPlay, {once:true});
+  document.addEventListener('click', tryPlay, {once:true});
+}
 
 /* ── INTRO: remove from DOM after animation ────────────────────── */
 const intro = document.getElementById('intro');
