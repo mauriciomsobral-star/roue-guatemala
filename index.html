@@ -1060,7 +1060,7 @@ document.querySelectorAll('a,button').forEach(el=>{
 if('scrollRestoration' in history) history.scrollRestoration = 'manual';
 window.scrollTo(0, 0);
 
-/* ── HERO VIDEO: autoplay sin atributo autoplay (evita overlay de iOS) ── */
+/* ── HERO VIDEO: autoplay + loop sin corte ─────────────────────── */
 const heroVideo = document.getElementById('heroVideo');
 if(heroVideo){
   heroVideo.muted = true;
@@ -1068,27 +1068,42 @@ if(heroVideo){
   heroVideo.defaultMuted = true;
   heroVideo.setAttribute('playsinline','');
   heroVideo.setAttribute('webkit-playsinline','');
+
   const tryPlay = () => {
     heroVideo.muted = true;
     heroVideo.play().catch(()=>{});
   };
-  // Intentar inmediatamente
+
+  // Intentar play inmediatamente y en eventos de carga
   tryPlay();
-  // Fallback después de carga del DOM
-  document.addEventListener('DOMContentLoaded', tryPlay);
   window.addEventListener('load', tryPlay);
-  // En primera interacción del usuario
-  ['touchstart','scroll','click','pointerdown'].forEach(ev => {
-    document.addEventListener(ev, tryPlay, {once:true, passive:true});
+  // En primera interacción
+  ['touchstart','scroll','click','pointerdown'].forEach(ev =>
+    document.addEventListener(ev, tryPlay, {once:true, passive:true})
+  );
+
+  // Loop sin corte: reiniciar 0.3s antes del final para evitar frame negro
+  heroVideo.addEventListener('timeupdate', () => {
+    if(heroVideo.duration && heroVideo.currentTime >= heroVideo.duration - 0.3){
+      heroVideo.currentTime = 0;
+    }
   });
 }
 
-/* ── INTRO: remove from DOM after animation ────────────────────── */
+/* ── INTRO: hide after animation (con fallbacks para iOS) ───────── */
 const intro = document.getElementById('intro');
 if(intro){
-  intro.addEventListener('animationend', () => {
-    intro.style.display = 'none';
+  const hideIntro = () => { intro.style.display = 'none'; };
+  // Solo responder a la animación correcta (evita que eventos de hijos disparen esto)
+  intro.addEventListener('animationend', (e) => {
+    if(e.animationName === 'introFadeOut' && e.target === intro) hideIntro();
   });
+  // Fallback duro: si iOS pausa/bloquea la animación, esconder después de 6.5s
+  setTimeout(hideIntro, 6500);
+  // También esconder en primera interacción del usuario
+  ['touchstart','click'].forEach(ev =>
+    document.addEventListener(ev, hideIntro, {once:true, passive:true})
+  );
 }
 
 /* ── NAV: glassmorphism on scroll ──────────────────────────────── */
