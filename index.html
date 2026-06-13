@@ -806,8 +806,8 @@ footer {
 <section class="hero">
   <!-- Video background -->
   <div id="heroWrap">
-    <video id="heroVideo" autoplay muted loop playsinline webkit-playsinline>
-      <source src="imgs/hero-nuevo.mp4" type="video/mp4">
+    <video id="heroVideo" autoplay muted loop playsinline webkit-playsinline preload="auto">
+      <source id="heroSrc" src="imgs/hero-nuevo.mp4" type="video/mp4">
       <source src="imgs/hero-loop.mp4" type="video/mp4">
     </video>
     <div class="hero-overlay"></div>
@@ -1069,15 +1069,25 @@ if(heroVideo){
   heroVideo.setAttribute('playsinline','');
   heroVideo.setAttribute('webkit-playsinline','');
 
+  // En móvil usar versión comprimida (carga más rápido = iOS acepta mejor el autoplay)
+  if(window.innerWidth <= 768){
+    const src = document.getElementById('heroSrc');
+    if(src){ src.src = 'imgs/hero-mobile.mp4'; }
+    heroVideo.load();
+  }
+
   const tryPlay = () => {
     heroVideo.muted = true;
     heroVideo.play().catch(()=>{});
   };
 
-  // Intentar play inmediatamente y en eventos de carga
+  // Reproducir en cuanto el video puede empezar
+  heroVideo.addEventListener('canplay', tryPlay, {once:true});
+  heroVideo.addEventListener('loadeddata', tryPlay, {once:true});
   tryPlay();
   window.addEventListener('load', tryPlay);
-  // En primera interacción
+
+  // En primera interacción del usuario
   ['touchstart','scroll','click','pointerdown'].forEach(ev =>
     document.addEventListener(ev, tryPlay, {once:true, passive:true})
   );
