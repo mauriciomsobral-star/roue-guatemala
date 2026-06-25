@@ -441,6 +441,10 @@ var lbCount = document.getElementById('lbCount');
 var lbItems = [];
 var lbIdx = 0;
 
+function lbSize() {
+  lbEl.style.width = window.innerWidth + 'px';
+  lbEl.style.height = window.innerHeight + 'px';
+}
 function lbOpen(idx) {
   var activeGal = document.querySelector('.gal.gal-active');
   lbItems = activeGal ? Array.from(activeGal.querySelectorAll('.gal-cell img')).map(function(i) { return i.src; }) : [];
@@ -448,9 +452,16 @@ function lbOpen(idx) {
   if (!lbItems.length) return;
   lbImg.src = lbItems[lbIdx];
   lbCount.textContent = (lbIdx+1) + ' / ' + lbItems.length;
+  lbSize();
   lbEl.classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
-function lbClose() { lbEl.classList.remove('open'); }
+function lbClose() {
+  lbEl.classList.remove('open');
+  document.body.style.overflow = '';
+}
+window.addEventListener('resize', function(){ if (lbEl.classList.contains('open')) lbSize(); });
+window.addEventListener('orientationchange', function(){ if (lbEl.classList.contains('open')) setTimeout(lbSize, 200); });
 function lbNav(dir) {
   lbIdx = (lbIdx + dir + lbItems.length) % lbItems.length;
   lbImg.src = lbItems[lbIdx];
