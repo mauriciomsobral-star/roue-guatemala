@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ROUE Guatemala | Powerful Riding</title>
+<link href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:'PFBaseline';src:url('fonts/PFBaselinePro-Regular.ttf') format('truetype');font-weight:400;}
+@font-face{font-family:'PFBaseline';src:url('fonts/PFBaselinePro-Light.ttf') format('truetype');font-weight:300;}
+@font-face{font-family:'PFBaseline';src:url('fonts/PFBaselinePro-Bold.ttf') format('truetype');font-weight:700;}
+</style>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{--black:#060606;--gold:#FFD400;--white:#ffffff;--muted:#888888;}
+html,body{height:100%;overflow:hidden;background:#060606;font-family:'Arimo',sans-serif;}
+
+/* ══════════════════════════════
+   INTRO SCREEN
+══════════════════════════════ */
+#intro{
+  position:fixed;inset:0;z-index:100;
+  background:var(--black);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:1.6rem;
+  animation:introFadeOut 1s 4.5s forwards;
+  pointer-events:none;
+  overflow:hidden;
+}
+
+/* Glow de fondo detrás del logo */
+.intro-glow{
+  position:absolute;
+  width:600px;height:300px;
+  background:radial-gradient(ellipse at 50% 50%,rgba(255,212,0,.18),transparent 70%);
+  filter:blur(40px);
+  opacity:0;animation:fadeIn 1s .8s forwards;
+  pointer-events:none;
+}
+
+/* "GUATEMALA" arriba */
+.intro-country{
+  font-size:.68rem;letter-spacing:.6em;text-transform:uppercase;
+  color:rgba(255,255,255,.3);
+  opacity:0;animation:slideUp .7s .2s cubic-bezier(.16,1,.3,1) forwards;
+}
+
+/* Logo */
+.intro-logo-wrap{
+  position:relative;display:flex;align-items:center;justify-content:center;
+  opacity:0;animation:logoEntrance .9s .5s cubic-bezier(.16,1,.3,1) forwards;
+}
+.intro-logo{
+  height:100px;width:auto;max-width:72vw;
+  position:relative;z-index:2;
+}
+/* Aros que pulsan */
+.intro-ring{
+  position:absolute;
+  width:130px;height:130px;
+  border:1px solid rgba(255,212,0,.25);
+  border-radius:50%;
+  animation:ringExpand 1.8s 1.2s ease-out forwards, ringPulse 2.5s 2s ease-in-out infinite;
+}
+.intro-ring2{
+  position:absolute;
+  width:170px;height:170px;
+  border:1px solid rgba(255,212,0,.1);
+  border-radius:50%;
+  animation:ringExpand 1.8s 1.5s ease-out forwards, ringPulse 2.5s 2.3s ease-in-out infinite;
+}
+
+/* Línea separadora */
+.intro-line{
+  width:0;height:1px;
+  background:linear-gradient(to right,transparent,rgba(255,212,0,.5),transparent);
+  animation:lineExpand .8s 1.3s ease-out forwards;
+}
+
+/* "POWERFUL RIDING" */
+.intro-tagline{
+  height:22px;width:auto;max-width:60vw;
+  opacity:0;
+  animation:taglineReveal .8s 1.5s cubic-bezier(.16,1,.3,1) forwards;
+  filter:drop-shadow(0 0 12px rgba(255,212,0,.5));
+}
+
+/* Texto de instrucción */
+.intro-hint{
+  position:absolute;bottom:2.5rem;
+  font-size:.55rem;letter-spacing:.35em;text-transform:uppercase;
+  color:rgba(255,255,255,.18);
+  opacity:0;animation:fadeIn .8s 2.2s forwards;
+}
+
+
+/* ══════════════════════════════
+   HERO (siempre visible debajo)
+══════════════════════════════ */
+#heroWrap{
+  position:fixed;inset:0;z-index:10;
+  background:var(--black);
+}
+
+
+/* Canvas fondo */
+#bgCanvas{position:absolute;inset:0;width:100%;height:100%;}
+
+/* Atmósfera */
+.atmo{
+  position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 55% 80% at 65% 55%,rgba(255,212,0,.08),transparent 55%),
+    radial-gradient(ellipse 35% 50% at 20% 50%,rgba(255,212,0,.05),transparent 50%),
+    linear-gradient(to right,rgba(6,6,6,.88) 0%,rgba(6,6,6,.2) 45%,rgba(6,6,6,.5) 100%);
+}
+
+/* NAV */
+nav{
+  position:absolute;top:0;left:0;right:0;z-index:10;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.4rem 3.5rem;
+  background:rgba(6,6,6,.7);border-bottom:1px solid rgba(255,255,255,.06);
+  backdrop-filter:blur(8px);
+}
+.nav-logo{height:24px;width:auto;}
+.nav-links{display:flex;gap:2.8rem;list-style:none;}
+.nav-links a{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);text-decoration:none;}
+.nav-btn{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;background:var(--gold);color:var(--black);padding:.55rem 1.3rem;text-decoration:none;font-weight:700;}
+
+/* HERO CONTENT */
+.hero{
+  position:absolute;inset:0;
+  display:grid;grid-template-columns:1fr 1fr;align-items:center;
+  padding:0 3.5rem;color:var(--white);
+  padding-top:70px;
+}
+.hero-left{display:flex;flex-direction:column;align-items:flex-start;position:relative;z-index:2;}
+.hero-flag{font-size:.62rem;letter-spacing:.38em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:1.6rem;}
+.hero-pretitle{font-size:clamp(.9rem,1.5vw,1.2rem);letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:1rem;}
+.hero-main{font-size:clamp(3.2rem,6vw,7rem);line-height:.95;letter-spacing:.02em;margin-bottom:1.6rem;}
+.hero-main .gold{color:var(--gold);}
+.hero-main .stroke{color:rgba(255,255,255,.28);}
+.hero-sub{font-size:clamp(.88rem,1.2vw,1rem);line-height:1.8;font-weight:300;color:rgba(255,255,255,.6);max-width:400px;margin-bottom:2.2rem;}
+.hero-sub strong{color:var(--white);font-weight:500;}
+.hero-pills{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:2.2rem;}
+.hero-pill{font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;border:1px solid rgba(255,212,0,.3);color:var(--gold);padding:.28rem .85rem;}
+.hero-ctas{display:flex;gap:1rem;}
+.btn-gold{font-size:.76rem;letter-spacing:.18em;text-transform:uppercase;background:var(--gold);color:var(--black);padding:.9rem 2rem;text-decoration:none;font-weight:700;}
+.btn-outline{font-size:.76rem;letter-spacing:.18em;text-transform:uppercase;color:var(--white);border:1px solid rgba(255,255,255,.2);padding:.9rem 2rem;text-decoration:none;}
+
+/* MOTO */
+.hero-right{position:relative;display:flex;align-items:center;justify-content:center;height:100%;}
+
+/* ══════════════════════════════
+   MOBILE
+══════════════════════════════ */
+@media(max-width:768px){
+  nav{padding:1rem 1.4rem;}
+  .nav-links{display:none;}
+  .nav-btn{font-size:.6rem;letter-spacing:.12em;padding:.45rem .9rem;}
+  .nav-logo{height:20px;}
+
+  .hero{
+    grid-template-columns:1fr;
+    padding:0 1.4rem;
+    padding-top:60px;
+    align-items:flex-start;
+    padding-bottom:2rem;
+  }
+  .hero-right{display:none;}
+  .hero-flag{font-size:.55rem;margin-bottom:1rem;}
+  .hero-pretitle{font-size:.75rem;margin-bottom:.6rem;}
+  .hero-main{font-size:clamp(2.6rem,12vw,4rem);margin-bottom:1.2rem;}
+  .hero-sub{font-size:.85rem;max-width:100%;margin-bottom:1.6rem;}
+  .hero-pills{margin-bottom:1.6rem;}
+  .hero-pill{font-size:.55rem;}
+  .btn-gold,.btn-outline{font-size:.65rem;padding:.8rem 1.4rem;letter-spacing:.12em;white-space:nowrap;}
+}
+.moto-glow{position:absolute;bottom:17%;left:50%;transform:translateX(-50%);width:60%;height:20px;background:radial-gradient(ellipse at 50%,rgba(255,212,0,.5),transparent 70%);filter:blur(10px);animation:glowPulse 2.5s ease-in-out infinite;}
+.moto-floor{position:absolute;bottom:19%;left:50%;transform:translateX(-50%);width:75%;height:2px;background:linear-gradient(to right,transparent,rgba(255,212,0,.5) 30%,rgba(255,212,0,.7) 50%,rgba(255,212,0,.5) 70%,transparent);}
+.moto-wrap{position:relative;z-index:5;width:92%;max-width:600px;}
+#heroMoto{width:100%;filter:drop-shadow(0 20px 60px rgba(255,212,0,.2)) drop-shadow(0 0 30px rgba(255,212,0,.1));animation:motoFloat 4s ease-in-out infinite;}
+.moto-shine{position:absolute;inset:0;pointer-events:none;background:linear-gradient(110deg,transparent 20%,rgba(255,255,255,.13) 45%,rgba(255,255,255,.18) 50%,rgba(255,255,255,.13) 55%,transparent 75%);animation:shinePass 5s ease-in-out 1s infinite;}
+
+/* SPARK */
+.spark{position:absolute;width:2px;height:2px;background:var(--gold);border-radius:50%;opacity:0;animation:sparkFloat var(--dur) ease-in var(--delay) infinite;}
+
+/* ══════════════════════════════
+   KEYFRAMES
+══════════════════════════════ */
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+@keyframes slideUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+@keyframes logoEntrance{
+  0%{opacity:0;transform:scale(.75);filter:drop-shadow(0 0 0px rgba(255,212,0,0));}
+  60%{filter:drop-shadow(0 0 35px rgba(255,212,0,.8)) drop-shadow(0 0 80px rgba(255,212,0,.3));}
+  100%{opacity:1;transform:scale(1);filter:drop-shadow(0 0 12px rgba(255,212,0,.4));}
+}
+@keyframes logoPulse{
+  0%,100%{filter:drop-shadow(0 0 10px rgba(255,212,0,.35));}
+  50%{filter:drop-shadow(0 0 30px rgba(255,212,0,.75)) drop-shadow(0 0 60px rgba(255,212,0,.25));}
+}
+@keyframes ringExpand{
+  0%{opacity:0;transform:scale(.3);}
+  100%{opacity:1;transform:scale(1);}
+}
+@keyframes ringPulse{
+  0%,100%{transform:scale(1);opacity:.7;}
+  50%{transform:scale(1.1);opacity:1;}
+}
+@keyframes lineExpand{
+  from{width:0;}to{width:260px;}
+}
+@keyframes taglineReveal{
+  0%{opacity:0;letter-spacing:.15em;}
+  100%{opacity:1;letter-spacing:.6em;}
+}
+@keyframes motoFloat{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-13px);}
+}
+@keyframes glowPulse{
+  0%,100%{opacity:.6;width:60%;}
+  50%{opacity:1;width:68%;}
+}
+@keyframes shinePass{
+  0%{left:-100%;opacity:0;}4%{opacity:1;}42%{left:120%;}43%{opacity:0;}100%{left:120%;opacity:0;}
+}
+@keyframes sparkFloat{
+  0%{opacity:0;transform:translate(0,0);}10%{opacity:.8;}100%{opacity:0;transform:translate(var(--tx),var(--ty));}
+}
+@keyframes introFadeOut{
+  0%{opacity:1;}100%{opacity:0;pointer-events:none;}
+}
+/* Ciclo 22s: razor 9s → crossfade 2s → velom 9s → crossfade 2s */
+/* Ciclo 6s seamless: mid-cross → razor 2.5s → cross 1s → velom 2.5s → mid-cross */
+@keyframes cycleRazor{
+  0%     {opacity:.5;}
+  8.3%   {opacity:1;}
+  41.7%  {opacity:1;}
+  58.3%  {opacity:0;}
+  91.7%  {opacity:0;}
+  100%   {opacity:.5;}
+}
+@keyframes cycleVelom{
+  0%     {opacity:.5;}
+  8.3%   {opacity:0;}
+  41.7%  {opacity:0;}
+  58.3%  {opacity:1;}
+  91.7%  {opacity:1;}
+  100%   {opacity:.5;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ INTRO ══ -->
+<div id="intro">
+  <div class="intro-glow"></div>
+  <div class="intro-country">Guatemala</div>
+  <div class="intro-logo-wrap">
+    <div class="intro-ring"></div>
+    <div class="intro-ring2"></div>
+    <img src="imgs/roue-wordmark.png" alt="ROUE" class="intro-logo">
+  </div>
+  <div class="intro-line"></div>
+  <img src="imgs/roue-tagline.png" class="intro-tagline" alt="POWERFUL RIDING">
+  <div class="intro-hint">Cargando experiencia</div>
+</div>
+
+<!-- ══ HERO ══ -->
+<div id="heroWrap">
+  <!-- Video Razor -->
+  <video autoplay muted loop playsinline preload="auto" id="videoRazor" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;">
+    <source src="imgs/hero-loop.mp4" type="video/mp4">
+  </video>
+  <!-- Overlay oscuro -->
+  <div style="position:absolute;inset:0;z-index:1;background:linear-gradient(to right,rgba(6,6,6,.88) 0%,rgba(6,6,6,.45) 50%,rgba(6,6,6,.2) 100%);"></div>
+  <canvas id="bgCanvas" style="display:none;"></canvas>
+  <div class="atmo" style="display:none;"></div>
+  <nav>
+    <img src="imgs/roue-logo-white.png" alt="ROUE" class="nav-logo">
+    <ul class="nav-links">
+      <li><a href="#">Modelos</a></li>
+      <li><a href="#">Garantía</a></li>
+    </ul>
+    <a href="#" class="nav-btn">Contáctanos</a>
+  </nav>
+  <div class="hero">
+    <div class="hero-left">
+      <div class="hero-flag">Distribuidores Oficiales en Guatemala</div>
+      <div class="hero-pretitle">Nuestras motos eléctricas</div>
+      <h1 class="hero-main">ESTÁN<br><span class="stroke">DISEÑADAS</span><br>PARA <span class="gold">TI.</span></h1>
+      <p class="hero-sub">Movilidad económica sin sacrificar calidad. <strong>Tecnología eléctrica de marca mexicana</strong>, ahora disponible en Guatemala.</p>
+      <div class="hero-pills">
+        <span class="hero-pill">» Garantía incluida «</span>
+        <span class="hero-pill">» 100% eléctrica «</span>
+        <span class="hero-pill">» Cero emisiones «</span>
+      </div>
+      <div class="hero-ctas">
+        <a href="#" class="btn-gold">» Ver modelos «</a>
+        <a href="#" class="btn-outline">Conocer más →</a>
+      </div>
+    </div>
+    <div class="hero-right"></div>
+  </div>
+</div>
+
+<script>
+/* ── Canvas fondo ── */
+(function(){
+  var c=document.getElementById('bgCanvas'),ctx=c.getContext('2d'),W,H;
+  function resize(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;}
+  resize();window.addEventListener('resize',resize);
+  var bokeh=[];
+  for(var i=0;i<50;i++) bokeh.push({x:Math.random()*1.3-.15,y:Math.random(),r:15+Math.random()*70,a:.03+Math.random()*.08,spd:.00006+Math.random()*.00018,hue:Math.random()<.4?45:(Math.random()<.5?210:28),dir:Math.random()<.5?1:-1,ph:Math.random()*Math.PI*2});
+  var streaks=[];
+  for(var j=0;j<25;j++) streaks.push(mk());
+  function mk(){return{x:Math.random()*.4+.55,y:.12+Math.random()*.76,len:.04+Math.random()*.1,spd:.002+Math.random()*.006,a:.04+Math.random()*.15,w:.5+Math.random()*1.5};}
+  function draw(){
+    ctx.fillStyle='#06060a';ctx.fillRect(0,0,W,H);
+    bokeh.forEach(function(b){
+      b.ph+=b.spd*b.dir;var p=Math.sin(b.ph)*.3+.7;
+      var g=ctx.createRadialGradient(b.x*W,b.y*H,0,b.x*W,b.y*H,b.r*p);
+      g.addColorStop(0,'hsla('+b.hue+',75%,60%,'+(b.a*p)+')');g.addColorStop(1,'hsla('+b.hue+',75%,60%,0)');
+      ctx.beginPath();ctx.arc(b.x*W,b.y*H,b.r*p,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();
+    });
+    streaks.forEach(function(s,i){
+      s.x+=s.spd;if(s.x>1.15)streaks[i]=mk();
+      var x1=s.x*W,x2=(s.x-s.len)*W,y=s.y*H;
+      var g=ctx.createLinearGradient(x2,y,x1,y);
+      g.addColorStop(0,'rgba(255,215,80,0)');g.addColorStop(.6,'rgba(255,215,80,'+s.a+')');g.addColorStop(1,'rgba(255,255,200,'+(s.a*.5)+')');
+      ctx.beginPath();ctx.moveTo(x2,y);ctx.lineTo(x1,y);ctx.strokeStyle=g;ctx.lineWidth=s.w;ctx.stroke();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ── Partículas ── */
+(function(){
+  var c=document.getElementById('sparks');
+  for(var i=0;i<18;i++){
+    var s=document.createElement('div');s.className='spark';
+    s.style.cssText='left:'+(28+Math.random()*55)+'%;bottom:'+(12+Math.random()*70)+'%;--dur:'+(2.5+Math.random()*3.5).toFixed(1)+'s;--delay:'+(Math.random()*5).toFixed(1)+'s;--tx:'+(Math.random()*70-35).toFixed(0)+'px;--ty:-'+(45+Math.random()*90).toFixed(0)+'px';
+    c.appendChild(s);
+  }
+})();
+
+
+</script>
+
+</body>
+</html>
