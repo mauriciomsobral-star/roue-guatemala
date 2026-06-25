@@ -20,7 +20,7 @@
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 :root{--black:#060606;--dark:#0e0e0e;--gold:#FFD400;--white:#ffffff;--muted:#888888;--line:rgba(255,255,255,0.06);}
-html{scroll-behavior:smooth;}
+html{scroll-behavior:smooth;overflow-x:hidden;}
 body{background:var(--black);color:var(--white);font-family:'Arimo',sans-serif;overflow-x:hidden;cursor:none;}
 .cursor{width:9px;height:9px;background:var(--gold);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;mix-blend-mode:difference;}
 .cursor-ring{width:34px;height:34px;border:1px solid rgba(255,212,0,.35);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transition:width .3s,height .3s;}
@@ -352,6 +352,8 @@ footer{background:var(--black);border-top:1px solid var(--line);padding:2.5rem 3
 </footer>
 
 <script>
+if('scrollRestoration' in history) history.scrollRestoration = 'manual';
+window.scrollTo(0, 0);
 const cur = document.getElementById('cur');
 const ring = document.getElementById('ring');
 let mx=0,my=0,rx=0,ry=0;
